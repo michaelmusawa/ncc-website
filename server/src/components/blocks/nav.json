@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_blocks_navs",
+  "info": {
+    "displayName": "Nav"
+  },
+  "options": {},
+  "attributes": {
+    "links": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

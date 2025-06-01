@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_elements_service_categories",
+  "info": {
+    "displayName": "service category"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "userType": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "residents",
+        "businesses",
+        "visitors"
+      ]
+    },
+    "serviceItems": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "url": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
