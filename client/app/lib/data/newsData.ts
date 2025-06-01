@@ -1,0 +1,81 @@
+export const newsData = [
+  {
+    category: "Public Notice",
+    categoryTextColor: "text-primary",
+    gradientFrom: "from-primary/90",
+    gradientTo: "to-primary-dark/80",
+    date: "May 29, 2025",
+    title: "Water Service Interruption Notice",
+    summary:
+      "Scheduled maintenance of the Ndakaini Dam water supply system will cause service interruptions in parts of Eastlands from June 3-5, 2025.",
+    link: "/resources/news/water-service-interruption",
+    linkColorBase: "text-primary",
+    linkColorHover: "hover:text-primary-dark",
+  },
+  {
+    category: "Event",
+    categoryTextColor: "text-amber-600",
+    gradientFrom: "from-amber-500/90",
+    gradientTo: "to-amber-400/80",
+    date: "June 12-14, 2025",
+    title: "Nairobi Innovation Week 2025",
+    summary:
+      "Join us for the annual Innovation Week showcasing technological advancements and entrepreneurial opportunities in Nairobi County.",
+    link: "/resources/innovation-week",
+    linkColorBase: "text-amber-600",
+    linkColorHover: "hover:text-amber-700",
+  },
+  {
+    category: "Announcement",
+    categoryTextColor: "text-blue-600",
+    gradientFrom: "from-blue-500/90",
+    gradientTo: "to-blue-400/80",
+    date: "May 25, 2025",
+    title: "Digital Service Platform Upgrades",
+    summary:
+      "Nairobi County is upgrading its digital services platform to improve efficiency and user experience. New features include mobile payments and document verification.",
+    link: "/resources/news/digital-service-upgrades",
+    linkColorBase: "text-blue-600",
+    linkColorHover: "hover:text-blue-700",
+  },
+  {
+    category: "Public Notice",
+    categoryTextColor: "text-green-600",
+    gradientFrom: "from-green-500/90",
+    gradientTo: "to-green-400/80",
+    date: "June 1, 2025",
+    title: "Waste Collection Schedule Update",
+    summary:
+      "The Nairobi County waste collection schedule has been updated. Check the new pickup days for residential areas effective June 5, 2025.",
+    link: "/resources/news/waste-collection-update",
+    linkColorBase: "text-green-600",
+    linkColorHover: "hover:text-green-700",
+  },
+  {
+    category: "Event",
+    categoryTextColor: "text-purple-600",
+    gradientFrom: "from-purple-500/90",
+    gradientTo: "to-purple-400/80",
+    date: "June 20, 2025",
+    title: "County Health Fair 2025",
+    summary:
+      "Nairobi County invites you to the annual Health Fair with free screenings, workshops, and wellness activities on June 20, 2025.",
+    link: "/resources/news/county-health-fair",
+    linkColorBase: "text-purple-600",
+    linkColorHover: "hover:text-purple-700",
+  },
+  {
+    category: "Announcement",
+    categoryTextColor: "text-red-600",
+    gradientFrom: "from-red-500/90",
+    gradientTo: "to-red-400/80",
+    date: "June 10, 2025",
+    title: "Road Rehabilitation Project",
+    summary:
+      "The Mombasa Road rehabilitation project begins June 15, 2025. Expect lane closures and detours between Central Business District and Uhuru Highway.",
+    link: "/resources/news/road-rehab-project",
+    linkColorBase: "text-red-600",
+    linkColorHover: "hover:text-red-700",
+  },
+  // Add more items here as needed
+];
