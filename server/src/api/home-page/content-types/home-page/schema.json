@@ -22,7 +22,10 @@
       "components": [
         "blocks.hero-section",
         "blocks.nav",
-        "blocks.service-section"
+        "blocks.service-section",
+        "blocks.sector-section",
+        "blocks.explore-section",
+        "blocks.news-section"
       ]
     }
   }

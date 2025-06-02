@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_elements_sector_categories",
+  "info": {
+    "displayName": "sector category"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subTitle": {
+      "type": "richtext"
+    },
+    "serviceItem": {
+      "type": "component",
+      "component": "elements.services",
+      "repeatable": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "href": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

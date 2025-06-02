@@ -1,24 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import ExploreCard from "./ExploreCard";
-import { ExploreSectionProps } from "@/app/lib/types";
+import SectorCard from "./SectorCard";
+import { SectorsSectionProps } from "@/app/lib/types";
 
-const Explore = ({
+const Sectors = ({
   heading,
   subHeading,
-  explores,
+  sectors,
   cta,
-}: Readonly<ExploreSectionProps>) => {
+}: Readonly<SectorsSectionProps>) => {
   const [showSix, setShowSix] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
-  const defaultExplores = explores.slice(0, 4);
-  const sixExplores = explores.slice(0, 6);
+  const defaultSectors = sectors.slice(0, 4);
+  const sixSectors = sectors.slice(0, 6);
 
   return (
     <section
-      id="explore"
+      id="sectors"
       className="relative py-12 md:py-20 overflow-hidden scroll-mt-16 md:scroll-mt-20 bg-gray-50"
     >
       <div className="w-full max-w-6xl mx-auto mt-16 transform transition-all duration-700 translate-y-4 delay-700">
@@ -35,7 +35,7 @@ const Explore = ({
               </p>
               <div className="mt-4 flex flex-wrap gap-4">
                 <a
-                  href="/some-other-cta"
+                  href={(cta && cta[0]?.href) || "#"}
                   className="px-5 py-2 bg-primary text-white rounded-full font-medium shadow-lg hover:bg-primary-dark transition-all duration-300 text-sm"
                 >
                   Some CTA
@@ -52,8 +52,8 @@ const Explore = ({
             {/* RIGHT COLUMN: Title, Description, CTAs */}
             <div className="w-full md:w-2/3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {defaultExplores.map((explore, idx) => (
-                  <ExploreCard key={idx} explore={explore} />
+                {defaultSectors.map((sector, idx) => (
+                  <SectorCard key={idx} sector={sector} />
                 ))}
               </div>
             </div>
@@ -66,7 +66,7 @@ const Explore = ({
             {/* HEADER ROW: Title + See Less */}
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
-                Explore more
+                {heading}
               </h3>
               <button
                 onClick={() => {
@@ -81,19 +81,19 @@ const Explore = ({
 
             {/* GRID OF 6 (or all if showAll) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-              {(showAll ? explores : sixExplores).map((explore, idx) => (
-                <ExploreCard key={idx} explore={explore} />
+              {(showAll ? sectors : sixSectors).map((sector, idx) => (
+                <SectorCard key={idx} sector={sector} />
               ))}
             </div>
 
             {/* VIEW ALL / VIEW LESS BUTTON */}
-            {explores.length > 6 && !showAll && (
+            {sectors.length > 6 && !showAll && (
               <div className="flex justify-center mb-16">
                 <button
                   onClick={() => setShowAll(true)}
                   className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 font-medium"
                 >
-                  View All Explore
+                  View All Sectors
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -117,7 +117,7 @@ const Explore = ({
                   onClick={() => setShowAll(false)}
                   className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-dark transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 font-medium"
                 >
-                  View Less Explores
+                  View Less Sectors
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -142,4 +142,4 @@ const Explore = ({
   );
 };
 
-export default Explore;
+export default Sectors;

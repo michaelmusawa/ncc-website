@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_elements_news_categories",
+  "info": {
+    "displayName": "news category"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subTitle": {
+      "type": "richtext"
+    },
+    "newsType": {
+      "type": "enumeration",
+      "enum": [
+        "public",
+        "event",
+        "announcement"
+      ]
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "href": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

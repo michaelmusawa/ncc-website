@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_elements_services",
+  "info": {
+    "displayName": "services"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subTitle": {
+      "type": "richtext"
+    }
+  },
+  "config": {}
+}

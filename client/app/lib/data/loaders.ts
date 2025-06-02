@@ -3,12 +3,14 @@ import { fetchAPI } from "../utils/strapi/fetch";
 import { getStrapiURL } from "../utils/strapi/get-strapi-url";
 const BASE_URL = getStrapiURL();
 const BLOG_PAGE_SIZE = 3;
+
 const homePageQuery = qs.stringify(
   {
     populate: {
       blocks: {
         on: {
           "blocks.hero-section": {
+            fields: ["title", "subTitle"],
             populate: {
               images: {
                 fields: ["url", "alternativeText"],
@@ -17,7 +19,6 @@ const homePageQuery = qs.stringify(
                 fields: ["text", "href", "isExternal"],
               },
             },
-            fields: ["title", "subTitle"],
           },
           "blocks.nav": {
             populate: {
@@ -44,12 +45,62 @@ const homePageQuery = qs.stringify(
             },
             fields: ["heading", "subHeading"],
           },
+          "blocks.sector-section": {
+            fields: ["heading", "subHeading"],
+            populate: {
+              sectors: {
+                fields: ["title", "subTitle", "href"],
+                populate: {
+                  serviceItem: {
+                    fields: ["title", "subTitle"],
+                  },
+                  image: {
+                    fields: ["url", "alternativeText"],
+                  },
+                },
+              },
+            },
+          },
+          "blocks.explore-section": {
+            fields: ["heading", "subHeading"],
+            populate: {
+              explores: {
+                fields: ["title", "subTitle", "url"],
+                populate: {
+                  image: {
+                    fields: ["url", "alternativeText"],
+                  },
+                },
+              },
+              cta: {
+                fields: ["text", "href", "isExternal"],
+              },
+            },
+          },
+          "blocks.news-section": {
+            fields: ["heading", "subHeading"],
+            populate: {
+              news: {
+                fields: ["title", "subTitle", "newsType", "href"],
+                populate: {
+                  image: {
+                    fields: ["url", "alternativeText"],
+                  },
+                },
+              },
+              cta: {
+                fields: ["text", "href", "isExternal"],
+              },
+            },
+          },
         },
       },
     },
   },
   { encodeValuesOnly: true }
 );
+
+export { homePageQuery };
 
 export async function getHomePage() {
   const path = "/api/home-page";

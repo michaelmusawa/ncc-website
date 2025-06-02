@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_blocks_sector_sections",
+  "info": {
+    "displayName": "Sector section"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "subHeading": {
+      "type": "richtext"
+    },
+    "sectors": {
+      "type": "component",
+      "component": "elements.sector-category",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

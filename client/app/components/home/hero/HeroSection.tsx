@@ -11,7 +11,7 @@ export default function HeroSection({
   cta,
 }: Readonly<HeroSectionProps>) {
   return (
-    <section className="relative min-h-[80vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background slider */}
       <HeroSlider images={images} />
 

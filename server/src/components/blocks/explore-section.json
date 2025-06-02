@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_blocks_explore_sections",
+  "info": {
+    "displayName": "Explore section"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "subHeading": {
+      "type": "richtext"
+    },
+    "explores": {
+      "type": "component",
+      "component": "elements.explore-category",
+      "repeatable": true
+    },
+    "cta": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

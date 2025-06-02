@@ -1,10 +1,9 @@
 "use client";
 
 import { ServiceSectionProps } from "@/app/lib/types";
-import Contact from "../contact/contact";
 import SearchBar from "../SearchBar";
-import ServiceCategoryCard from "./ServiceCategoryCard";
 import { useState } from "react";
+import Card from "./ServiceCategoryCard";
 
 export default function ServicesSection({
   heading,
@@ -108,7 +107,7 @@ export default function ServicesSection({
                     : cat.userType === activeUserType
                 )
                 .map((cat) => (
-                  <ServiceCategoryCard
+                  <Card
                     key={cat.title + cat.userType}
                     title={cat.title}
                     description={cat.description}

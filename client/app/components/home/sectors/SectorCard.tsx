@@ -1,10 +1,10 @@
 "use client";
 
-import { ExploreCategory } from "@/app/lib/types";
+import { SectorCategory } from "@/app/lib/types";
 import React from "react";
 import { StrapiImage } from "../../StrapiImage";
 
-const ExploreCard = ({ explore }: { explore: ExploreCategory }) => {
+const SectorCard = ({ sector }: { sector: SectorCategory }) => {
   const textColor = "text-gray-600";
   const hoverTextColor = "group-hover:text-gray-700";
 
@@ -16,10 +16,10 @@ const ExploreCard = ({ explore }: { explore: ExploreCategory }) => {
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12" />
 
         {/* If an `image` prop exists, layer it on top */}
-        {explore.image?.url && (
+        {sector.image?.url && (
           <StrapiImage
-            src={explore.image.url}
-            alt={explore.image.alternativeText || explore.title}
+            src={sector.image.url}
+            alt={sector.image.alternativeText || sector.title}
             className="absolute inset-0 w-full h-full object-cover opacity-50"
             width={1920}
             height={1080}
@@ -31,11 +31,11 @@ const ExploreCard = ({ explore }: { explore: ExploreCategory }) => {
         <h4
           className={`text-lg font-bold text-gray-800 mb-2 transition-colors duration-300 ${hoverTextColor}`}
         >
-          {explore.title}
+          {sector.title}
         </h4>
         <div className="bg-current/50 w-16 h-1 rounded-full mb-3" />
         <p className="text-gray-600 text-sm mb-5 line-clamp-2">
-          {explore.subTitle}
+          {sector.subTitle}
         </p>
         <div className="flex justify-between items-center pt-2 border-t border-gray-100">
           <div className="flex items-center text-xs text-gray-500">
@@ -53,9 +53,10 @@ const ExploreCard = ({ explore }: { explore: ExploreCategory }) => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
+            <span>{sector.serviceItems?.length} Services</span>
           </div>
           <a
-            href={explore.url}
+            href={sector.href}
             className={`flex items-center text-sm font-medium gap-1.5 transition-all duration-300 ${textColor} hover:gap-3 ${hoverTextColor}`}
           >
             Explore
@@ -80,4 +81,4 @@ const ExploreCard = ({ explore }: { explore: ExploreCategory }) => {
   );
 };
 
-export default ExploreCard;
+export default SectorCard;

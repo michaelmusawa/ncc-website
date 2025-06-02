@@ -9,6 +9,8 @@ import NewsEventsSection from "./news/NewsEventsSection";
 import Footer from "../footer";
 import Contact from "./contact/contact";
 import Explore from "./explore/Explore";
+import Sectors from "./sectors/Sectors";
+import Tenders from "./tenders/Tenders";
 
 export default function Home({ blocks }: { blocks: any }) {
   const [showNav, setShowNav] = useState(false);
@@ -36,16 +38,17 @@ export default function Home({ blocks }: { blocks: any }) {
 
   return (
     <>
-      <AnimationStyles />
+      {/* <AnimationStyles /> */}
       {showNav && <Nav />}
 
       <main className="flex flex-col min-h-screen">
         <HeroSection {...blocks[0]} />
         <ServicesSection {...blocks[1]} />
-        <Explore />
+        <Sectors {...blocks[2]} />
+        <Tenders />
+        <Explore {...blocks[3]} />
+        <NewsEventsSection {...blocks[4]} />
         <Contact />
-        <NewsEventsSection />
-
         <Footer />
       </main>
     </>

@@ -2,19 +2,28 @@
 
 import React, { useState } from "react";
 import { newsData } from "@/app/lib/data/newsData";
-import NewsCard, { NewsItem } from "./NewsCard";
+import NewsCard from "./NewsCard";
+import { NewsSectionProps } from "@/app/lib/types";
 
-export default function NewsEventsSection() {
+export default function NewsEventsSection({
+  heading,
+  subHeading,
+  news,
+  cta,
+}: Readonly<NewsSectionProps>) {
   const [showSix, setShowSix] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   // Default: first 4 news items
-  const defaultNews = newsData.slice(0, 4);
+  const defaultNews = news.slice(0, 4);
   // Six: first 6 items
-  const sixNews = newsData.slice(0, 6);
+  const sixNews = news.slice(0, 6);
 
   return (
-    <section id="news-events" className="relative py-16 md:py-24 bg-gray-50">
+    <section
+      id="news-events"
+      className="relative py-12 md:py-20 overflow-hidden scroll-mt-16 md:scroll-mt-20 bg-gray-50"
+    >
       {/* Light grey overlay */}
       <div className="absolute inset-0 bg-gray-500/10 backdrop-filter backdrop-brightness-98"></div>
       <div className="container mx-auto px-4 relative z-10">
@@ -24,7 +33,7 @@ export default function NewsEventsSection() {
             {/* LEFT COLUMN: 4 news cards */}
             <div className="w-full md:w-2/3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {defaultNews.map((item: NewsItem, idx: number) => (
+                {defaultNews.map((item, idx: number) => (
                   <NewsCard key={idx} item={item} />
                 ))}
               </div>
@@ -33,11 +42,10 @@ export default function NewsEventsSection() {
             {/* RIGHT COLUMN: Title, Description, CTAs */}
             <div className="w-full md:w-1/3 pr-0 md:pr-8 mt-8 md:mt-0">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
-                Latest News &amp; Events
+                {heading}
               </h2>
               <p className="text-gray-600 text-sm md:text-base mt-3 leading-relaxed max-w-md">
-                Stay informed about county announcements, public notices, and
-                upcoming events.
+                {subHeading}
               </p>
               <div className="mt-4 flex flex-wrap gap-4">
                 <a
@@ -63,7 +71,7 @@ export default function NewsEventsSection() {
             {/* HEADER ROW: Title + See Less */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
-                Latest News &amp; Events
+                {heading}
               </h2>
               <button
                 onClick={() => {
@@ -78,11 +86,9 @@ export default function NewsEventsSection() {
 
             {/* GRID OF 6 (or all if showAll) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-              {(showAll ? newsData : sixNews).map(
-                (item: NewsItem, idx: number) => (
-                  <NewsCard key={idx} item={item} />
-                )
-              )}
+              {(showAll ? newsData : sixNews).map((item, idx: number) => (
+                <NewsCard key={idx} item={item} />
+              ))}
             </div>
 
             {/* VIEW ALL / VIEW LESS BUTTON */}
