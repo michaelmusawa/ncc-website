@@ -11,22 +11,18 @@ export default function HeroSlider({ images }: { images: ImageProps[] }) {
   const isAnimating = useRef(false);
 
   useEffect(() => {
-    if (!images || images?.length <= 1) return;
+    if (!images || images.length <= 1) return;
 
     const interval = setInterval(() => {
-      // Don’t start a new animation if one is already running
       if (isAnimating.current) return;
-
-      const nextIndex = (current + 1) % images?.length;
+      const nextIndex = (current + 1) % images.length;
       isAnimating.current = true;
       setNext(nextIndex);
-    }, 9000);
+    }, 7000); // Faster transition
 
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, images?.length]);
+  }, [current, images]);
 
-  // Called when the slide-in animation for “next” finishes
   const handleAnimationComplete = () => {
     if (next === null) return;
     setCurrent(next);
@@ -37,24 +33,23 @@ export default function HeroSlider({ images }: { images: ImageProps[] }) {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <div className="relative w-full h-full">
-        {/* Static “current” image always visible in the background */}
-        {images && images?.length > 0 && (
+        {images?.length > 0 && (
           <StrapiImage
             src={images[current].url}
             alt={images[current].alternativeText || "Hero image"}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
             width={1920}
             height={1080}
+            priority
           />
         )}
 
-        {/* When next !== null, we render it as a motion.div sliding in from the right */}
         {next !== null && (
           <motion.div
             className="absolute inset-0 w-full h-full"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            transition={{ duration: 2.2, ease: "easeInOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
             onAnimationComplete={handleAnimationComplete}
           >
             <StrapiImage

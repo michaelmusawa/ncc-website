@@ -1,9 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { newsData } from "@/app/lib/data/newsData";
 import NewsCard from "./NewsCard";
 import { NewsSectionProps } from "@/app/lib/types";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiArrowRight,
+  FiChevronDown,
+  FiChevronLeft,
+  FiCalendar,
+  FiArrowUp,
+  FiChevronUp,
+} from "react-icons/fi";
 
 export default function NewsEventsSection({
   heading,
@@ -19,129 +27,179 @@ export default function NewsEventsSection({
   // Six: first 6 items
   const sixNews = news.slice(0, 6);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 },
+    },
+  };
+
   return (
     <section
       id="news-events"
-      className="relative py-12 md:py-20 overflow-hidden scroll-mt-16 md:scroll-mt-20 bg-gray-50"
+      className="relative py-16 md:py-24 overflow-hidden scroll-mt-16 md:scroll-mt-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950"
     >
-      {/* Light grey overlay */}
-      <div className="absolute inset-0 bg-gray-500/10 backdrop-filter backdrop-brightness-98"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        {/* DEFAULT STATE: 4 cards on LEFT, Title/Description/CTAs on RIGHT */}
-        {!showSix && (
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between">
-            {/* LEFT COLUMN: 4 news cards */}
-            <div className="w-full md:w-2/3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {defaultNews.map((item, idx: number) => (
-                  <NewsCard key={idx} item={item} />
-                ))}
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN: Title, Description, CTAs */}
-            <div className="w-full md:w-1/3 pr-0 md:pr-8 mt-8 md:mt-0">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
-                {heading}
-              </h2>
-              <p className="text-gray-600 text-sm md:text-base mt-3 leading-relaxed max-w-md">
-                {subHeading}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-4">
-                <a
-                  href="/some-other-cta"
-                  className="px-5 py-2 bg-primary text-white rounded-full font-medium shadow-lg hover:bg-primary-dark transition-all duration-300 text-sm"
-                >
-                  Some CTA
-                </a>
-                <button
-                  onClick={() => setShowSix(true)}
-                  className="px-5 py-2 bg-accent text-white rounded-full font-medium shadow-lg hover:bg-accent-dark transition-all duration-300 text-sm"
-                >
-                  See More
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* EXPANDED STATE: Title + See Less at TOP, then 6 cards full-width, then View All / View Less */}
-        {showSix && (
-          <div className="flex flex-col">
-            {/* HEADER ROW: Title + See Less */}
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
-                {heading}
-              </h2>
-              <button
-                onClick={() => {
-                  setShowSix(false);
-                  setShowAll(false);
-                }}
-                className="px-5 py-2 bg-accent text-white rounded-full font-medium shadow-lg hover:bg-accent-dark transition-all duration-300 text-sm"
+      <div className="container mx-auto px-4">
+        {/* DEFAULT STATE: Content on LEFT, Cards on RIGHT */}
+        <AnimatePresence mode="wait">
+          {!showSix ? (
+            <motion.div
+              className="flex flex-col md:flex-row md:items-start gap-8 md:gap-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* LEFT COLUMN: Title, Description, CTAs */}
+              <motion.div
+                className="w-full md:w-2/5"
+                initial={{ x: -20 }}
+                animate={{ x: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                See Less
-              </button>
-            </div>
+                <div className="sticky top-24">
+                  <div className="inline-block w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mb-6" />
+                  <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-900 dark:from-white dark:to-gray-300 mb-4">
+                    {heading}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 text-lg">
+                    {subHeading}
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <motion.a
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      href="/calendar"
+                      className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium shadow-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+                    >
+                      View Calendar <FiCalendar className="w-4 h-4" />
+                    </motion.a>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setShowSix(true)}
+                      className="px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                    >
+                      See More News
+                      <FiChevronDown className="w-5 h-5" />
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
 
-            {/* GRID OF 6 (or all if showAll) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-              {(showAll ? newsData : sixNews).map((item, idx: number) => (
-                <NewsCard key={idx} item={item} />
-              ))}
-            </div>
+              {/* RIGHT COLUMN: 4 cards */}
+              <motion.div
+                className="w-full md:w-3/5"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {defaultNews.map((item, idx) => (
+                    <NewsCard key={idx} item={item} index={idx} />
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
+          ) : (
+            /* EXPANDED STATE: Title + See Less at TOP, then cards */
+            <motion.div
+              className="flex flex-col"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* HEADER ROW: Title + See Less */}
+              <motion.div
+                className="flex justify-between items-center mb-10"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+              >
+                <div>
+                  <div className="inline-block w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mb-4" />
+                  <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-900 dark:from-white dark:to-gray-300">
+                    {heading}
+                  </h2>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setShowSix(false);
+                    setShowAll(false);
+                  }}
+                  className="px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                >
+                  See Less
+                  <FiChevronUp className="w-5 h-5" />
+                </motion.button>
+              </motion.div>
 
-            {/* VIEW ALL / VIEW LESS BUTTON */}
-            {newsData.length > 6 && !showAll && (
-              <div className="flex justify-center mb-16">
-                <button
-                  onClick={() => setShowAll(true)}
-                  className="px-6 py-3 bg-white border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 font-medium"
+              {/* GRID OF 6 (or all if showAll) */}
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                {(showAll ? news : sixNews).map((item, idx) => (
+                  <NewsCard key={idx} item={item} index={idx} />
+                ))}
+              </motion.div>
+
+              {/* VIEW ALL / VIEW LESS BUTTON */}
+              {news.length > 6 && !showAll && (
+                <motion.div
+                  className="flex justify-center mb-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
-                  View All News &amp; Events
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowAll(true)}
+                    className="px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white font-medium rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
-            {showAll && (
-              <div className="flex justify-center mb-16">
-                <button
-                  onClick={() => setShowAll(false)}
-                  className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-dark transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 font-medium"
+                    View All News & Events
+                    <FiArrowRight className="w-5 h-5" />
+                  </motion.button>
+                </motion.div>
+              )}
+              {showAll && (
+                <motion.div
+                  className="flex justify-center mb-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
-                  View Less News
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowAll(false)}
+                    className="px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20 12H4"
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+                    View Less News
+                    <FiChevronUp className="w-5 h-5" />
+                  </motion.button>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

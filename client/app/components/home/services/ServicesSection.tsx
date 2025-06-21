@@ -3,122 +3,213 @@
 import { ServiceSectionProps } from "@/app/lib/types";
 import SearchBar from "../SearchBar";
 import { useState } from "react";
-import Card from "./ServiceCategoryCard";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiChevronDown,
+  FiChevronUp,
+  FiExternalLink,
+  FiMapPin,
+  FiCheckCircle,
+} from "react-icons/fi";
+import ServiceCard from "./ServiceCategoryCard";
 
 export default function ServicesSection({
   heading,
   subHeading,
   services,
 }: Readonly<ServiceSectionProps>) {
-  // Track which userType tab is active (e.g. "all", "residents", "businesses", "visitors")
   const [activeUserType, setActiveUserType] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Build a unique list of the userType enum values we have in `services`
   const allUserTypes = Array.from(
     new Set(services?.map((cat) => cat.userType))
   );
 
-  // Always include "all" as an option
   if (!allUserTypes.includes("all")) {
     allUserTypes.unshift("all");
   }
 
+  // Filter services based on active user type and search query
+  const filteredServices = services?.filter((cat) => {
+    const matchesUserType =
+      activeUserType === "all" || cat.userType === activeUserType;
+    const matchesSearch =
+      cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.serviceItems?.some((item) =>
+        item.text.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    return matchesUserType && matchesSearch;
+  });
+
   return (
     <section
       id="services"
-      className="relative py-12 md:py-20 overflow-hidden scroll-mt-16 md:scroll-mt-20 bg-gray-50"
+      className="relative py-16 md:py-24 overflow-hidden scroll-mt-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950"
     >
-      <div className="absolute inset-0 bg-gray-100/50"></div>
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Heading */}
-        <div className="flex flex-col items-center mb-8 overflow-hidden">
-          <div className="w-16 h-1 bg-accent rounded-full mb-4 transform transition-all duration-700 translate-y-4" />
-          <h2
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary text-center transform transition-all duration-700 translate-y-4 delay-100"
-            style={{ animationDelay: "0.3s" }}
-          >
+        <motion.div
+          className="flex flex-col items-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mb-4" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-900 dark:from-white dark:to-gray-300">
             {heading}
           </h2>
-          <p
-            className="text-gray-600 text-center mt-3 md:mt-4 max-w-3xl mx-auto text-sm sm:text-base transform transition-all duration-700 translate-y-4 section-animate delay-200"
-            style={{ animationDelay: "0.5s" }}
-          >
+          <p className="text-gray-600 dark:text-gray-400 text-center mt-4 max-w-3xl mx-auto text-lg">
             {subHeading}
           </p>
-        </div>
+        </motion.div>
 
         {/* Services By Category */}
-        <div className="w-full max-w-7xl mx-auto mb-16">
-          {/* “Services by Category” sub‐heading (optional styling) */}
-          <div className="flex items-center justify-center mb-6 relative">
-            <div className="absolute left-16 w-12 h-1 bg-amber-400 rounded-full md:block" />
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 px-6 relative inline-block">
-              <span className="relative z-10">Services by Category</span>
+        <div className="w-full max-w-7xl mx-auto">
+          <motion.div
+            className="flex flex-col items-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 relative">
+              <span className="relative z-10 bg-white dark:bg-gray-900 px-4">
+                Services by Category
+              </span>
+              <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent z-0"></div>
             </h3>
-            <div className="absolute right-16 w-12 h-1 bg-amber-400 rounded-full md:block" />
-          </div>
+          </motion.div>
 
           {/* User Type Tabs */}
-          <div className="flex justify-center mb-8 transform transition-all duration-700 translate-y-4 section-animate delay-300">
-            <div className="bg-white p-2 rounded-xl shadow-md border border-gray-100 flex flex-wrap justify-center gap-2">
+          <motion.div
+            className="flex justify-center mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="bg-white dark:bg-gray-800 p-1 rounded-xl shadow-md flex flex-wrap justify-center gap-1 max-w-2xl w-full">
               {allUserTypes.map((ut) => (
-                <button
+                <motion.button
                   key={ut}
                   onClick={() => setActiveUserType(ut)}
-                  className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex-1 min-w-[120px] ${
                     activeUserType === ut
-                      ? // Pick a different color per userType, or fallback to primary
-                        {
-                          all: "bg-primary text-white shadow-md",
-                          residents: "bg-green-600 text-white shadow-md",
-                          businesses: "bg-amber-500 text-white shadow-md",
-                          visitors: "bg-blue-500 text-white shadow-md",
-                        }[ut] || "bg-primary text-white shadow-md"
-                      : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                      ? {
+                          all: "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md",
+                          residents:
+                            "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md",
+                          businesses:
+                            "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md",
+                          visitors:
+                            "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md",
+                        }[ut] ||
+                        "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md"
+                      : "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                   }`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {ut === "all"
                     ? "All Services"
                     : ut.charAt(0).toUpperCase() + ut.slice(1)}
-                </button>
+                </motion.button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Search Bar Under Tabs */}
-          <div className="w-full max-w-7xl mx-auto mb-8 flex justify-center transform transition-all duration-700 translate-y-4 delay-300">
-            <div className="relative w-full max-w-lg mx-auto">
-              <SearchBar variant="light" />
+          {/* Search Bar */}
+          <motion.div
+            className="w-full max-w-2xl mx-auto mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="relative">
+              <SearchBar
+                variant="light"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search services by name or description..."
+              />
             </div>
-          </div>
+          </motion.div>
 
-          {/* Instructions */}
-          <h4 className="text-xl font-semibold text-center text-gray-700 mb-6">
-            Select a service category to get started
-          </h4>
+          {/* Service Count */}
+          <motion.div
+            className="text-center mb-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <p className="text-gray-600 dark:text-gray-400">
+              Showing{" "}
+              <span className="font-semibold text-amber-600">
+                {filteredServices?.length || 0}
+              </span>{" "}
+              service categories
+              {searchQuery && ` matching "${searchQuery}"`}
+            </p>
+          </motion.div>
 
           {/* Grid of Service Categories */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 transform transition-all duration-700 translate-y-4 delay-400">
-            {services &&
-              services
-                .filter((cat) =>
-                  activeUserType === "all"
-                    ? true
-                    : cat.userType === activeUserType
-                )
-                .map((cat) => (
-                  <Card
-                    key={cat.title + cat.userType}
-                    title={cat.title}
-                    description={cat.description}
-                    userType={cat.userType}
-                    image={cat.image}
-                    url={cat.url}
-                    serviceItems={cat.serviceItems ?? []}
-                    activeUserType={activeUserType}
-                  />
-                ))}
-          </div>
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <AnimatePresence>
+              {filteredServices?.map((cat, index) => (
+                <ServiceCard
+                  key={cat.title + cat.userType}
+                  title={cat.title}
+                  description={cat.description}
+                  userType={cat.userType}
+                  image={cat.image}
+                  url={cat.url}
+                  serviceItems={cat.serviceItems ?? []}
+                  activeUserType={activeUserType}
+                  index={index}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Empty State */}
+          {filteredServices?.length === 0 && (
+            <motion.div
+              className="text-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="w-24 h-24 mx-auto bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                <FiCheckCircle className="w-12 h-12 text-gray-400" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                No services found
+              </h4>
+              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                {searchQuery
+                  ? `No services match your search for "${searchQuery}". Try a different term.`
+                  : "There are currently no services in this category."}
+              </p>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+                >
+                  Clear Search
+                </button>
+              )}
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

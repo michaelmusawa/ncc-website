@@ -1,90 +1,94 @@
 "use client";
 
 import { NewsCategory } from "@/app/lib/types";
-import React from "react";
 import { StrapiImage } from "../../StrapiImage";
+import { motion } from "framer-motion";
+import { FiCalendar, FiArrowRight } from "react-icons/fi";
 
-const NewsCard = ({ item }: { item: NewsCategory }) => {
-  const textColor = "text-gray-600";
-  const hoverTextColor = "group-hover:text-gray-700";
+const NewsCard = ({ item, index }: { item: NewsCategory; index: number }) => {
+  const getTypeColor = () => {
+    switch (item?.newsType?.toLowerCase()) {
+      case "event":
+        return "from-blue-500 to-blue-600";
+      case "public":
+        return "from-amber-500 to-amber-600";
+      case "update":
+        return "from-green-500 to-green-600";
+      default:
+        return "from-purple-500 to-purple-600";
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 transform group">
-      <div className="relative h-24 bg-gradient-to-r from-amber-500/90 to-amber-400/80 overflow-hidden rounded-t-xl">
-        {/* Decorative circles */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12" />
-        <div
-          className={`absolute top-4 left-4 bg-white/90 text-xs font-semibold px-3 py-1 rounded-full shadow-sm backdrop-blur-sm`}
-        >
-          {item.newsType}
+    <motion.div
+      className="group relative h-full"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      whileHover={{ y: -5 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300"></div>
+
+      <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 h-full flex flex-col">
+        {/* Header with image */}
+        <div className="h-48 relative overflow-hidden">
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+
+          {/* News type badge */}
+          <div className="absolute top-4 left-4 z-20">
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getTypeColor()} backdrop-blur-sm flex items-center gap-1`}
+            >
+              {item.newsType}
+            </span>
+          </div>
+
+          {/* Date */}
+          <div className="absolute top-4 right-4 z-20 flex items-center text-white/90 text-sm">
+            <FiCalendar className="mr-1.5" size={14} />
+            May 25, 2025
+          </div>
+
+          {item.image?.url && (
+            <StrapiImage
+              src={item.image.url}
+              alt={item.image.alternativeText || item.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              width={600}
+              height={400}
+            />
+          )}
+
+          {/* Title */}
+          <h3 className="absolute bottom-4 left-4 right-4 z-20 text-xl font-bold text-white drop-shadow-md">
+            {item.title}
+          </h3>
         </div>
 
-        {/* If an `image` prop exists, layer it on top */}
-        {item.image?.url && (
-          <StrapiImage
-            src={item.image.url}
-            alt={item.image.alternativeText || item.title}
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
-            width={1920}
-            height={1080}
-          />
-        )}
-      </div>
+        {/* Card Content */}
+        <div className="p-5 flex-1 flex flex-col bg-white dark:bg-gray-800">
+          <p className="text-gray-600 dark:text-gray-300 mb-4 flex-grow">
+            {item.subTitle}
+          </p>
 
-      <div className="absolute bottom-4 left-4 flex items-center text-white/90 text-sm">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 mr-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        May 25, 2025
-      </div>
-
-      <div className="p-5">
-        <h3
-          className={`text-lg font-bold text-gray-800 mb-2 group-hover:${textColor} transition-colors duration-300`}
-        >
-          {item.title}
-        </h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {item.subTitle}
-        </p>
-        <a
-          href={item.href}
-          className={`inline-flex items-center font-medium text-sm ${hoverTextColor} transition-colors`}
-        >
-          {item.newsType === "event"
-            ? "Event Details"
-            : item.newsType === "public"
-            ? "Read Full Notice"
-            : "Learn More"}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-all duration-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          {/* Action Button */}
+          <a
+            href={item.href}
+            className="w-full py-3 px-4 text-center bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white font-medium rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-          </svg>
-        </a>
+            <span>
+              {item.newsType === "event"
+                ? "Event Details"
+                : item.newsType === "public"
+                ? "Read Full Notice"
+                : "Learn More"}
+            </span>
+            <FiArrowRight className="w-4 h-4" />
+          </a>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
-
 export default NewsCard;
